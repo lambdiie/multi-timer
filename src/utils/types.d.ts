@@ -3,4 +3,5 @@ interface TimerType {
     startTime: number | null,
     elapsed: number,
     isRunning: boolean,
+    name: string,
 }

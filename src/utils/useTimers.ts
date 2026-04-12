@@ -17,6 +17,7 @@ export function useTimers() {
         startTime: null,
         elapsed: 0,
         isRunning: false,
+        name: "",
       },
     ]);
   }
@@ -57,5 +58,15 @@ export function useTimers() {
     );
   }
 
-  return { timers, addTimer, removeTimer, startTimer, stopTimer, resetTimer };
+  function setTimerName(id: number, name: string) {
+    setTimers((timers: TimerType[]) =>
+      timers.map((t) =>
+        t.id === id
+          ? { ...t, name: name}
+          : t,
+      ),
+    );
+  }
+
+  return { timers, addTimer, removeTimer, startTimer, stopTimer, resetTimer, setTimerName };
 }

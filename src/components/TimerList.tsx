@@ -6,15 +6,17 @@ function TimerList({
   stopTimer,
   resetTimer,
   removeTimer,
+  setTimerName,
 }: {
     timers: TimerType[],
     startTimer: (id: number) => void,
     stopTimer: (id: number) => void,
     resetTimer: (id: number) => void,
     removeTimer: (id: number) => void,
+    setTimerName: (id: number, name: string) => void,
 }) {
   return (
-    <>
+    <div className="w-screen flex flex-wrap">
       {timers.map((t: TimerType) => (
         <Timer
           key={t.id}
@@ -23,9 +25,10 @@ function TimerList({
           onStop={() => stopTimer(t.id)}
           onReset={() => resetTimer(t.id)}
           onRemove={() => removeTimer(t.id)}
+          onEdit={(e) => setTimerName(t.id, e.target.value)}
         />
       ))}
-    </>
+    </div>
   );
 }
 
