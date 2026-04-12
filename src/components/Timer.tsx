@@ -28,11 +28,13 @@ function Timer({
     <div className="flex flex-col grow basis-1/3">
       <button
         onClick={onClick}
-        className={`h-60 text-6xl bg-fuchsia-500 hover:cursor-pointer hover:brightness-125 ${timer.isRunning && "brightness-125"}`}
+        className={`h-60 text-6xl bg-fuchsia-500 hover:cursor-pointer ${timer.isRunning && "brightness-125"}`}
       >
         <TimerText timer={timer} />
       </button>
       <input type="text" value={timer.name} onChange={onEdit} className="text-center" />
+      <button onClick={onStart}>Start</button>
+      <button onClick={onStop}>Stop</button>
       <button onClick={onReset}>Reset</button>
       <button onClick={onRemove}>Remove</button>
     </div>
