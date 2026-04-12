@@ -29,7 +29,9 @@ export function useTimers() {
   function startTimer(id: number) {
     setTimers((timers: TimerType[]) =>
       timers.map((t) =>
-        t.id === id ? { ...t, isRunning: true, startTime: Date.now() } : t,
+        t.id === id && !t.isRunning
+          ? { ...t, isRunning: true, startTime: Date.now() }
+          : t,
       ),
     );
   }
@@ -37,7 +39,7 @@ export function useTimers() {
   function stopTimer(id: number) {
     setTimers((timers: TimerType[]) =>
       timers.map((t) =>
-        t.id === id
+        t.id === id && t.isRunning && t.startTime
           ? {
               ...t,
               isRunning: false,
@@ -60,13 +62,17 @@ export function useTimers() {
 
   function setTimerName(id: number, name: string) {
     setTimers((timers: TimerType[]) =>
-      timers.map((t) =>
-        t.id === id
-          ? { ...t, name: name}
-          : t,
-      ),
+      timers.map((t) => (t.id === id ? { ...t, name: name } : t)),
     );
   }
 
-  return { timers, addTimer, removeTimer, startTimer, stopTimer, resetTimer, setTimerName };
+  return {
+    timers,
+    addTimer,
+    removeTimer,
+    startTimer,
+    stopTimer,
+    resetTimer,
+    setTimerName,
+  };
 }
