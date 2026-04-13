@@ -4,4 +4,5 @@ interface TimerType {
     elapsed: number,
     isRunning: boolean,
     name: string,
+    colour: string,
 }

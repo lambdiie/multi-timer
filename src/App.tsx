@@ -17,6 +17,7 @@ function App() {
     stopTimer,
     resetTimer,
     setTimerName,
+    setTimerColour,
   } = useTimers();
 
   return (
@@ -28,7 +29,7 @@ function App() {
             variant="outline"
             aria-label="Add Timer"
             size="lg"
-            className="fixed top-4 left-4"
+            className="fixed top-4 left-4 z-50"
           >
             <Plus />
           </Button>
@@ -45,6 +46,7 @@ function App() {
         resetTimer={resetTimer}
         removeTimer={removeTimer}
         setTimerName={setTimerName}
+        setTimerColour={setTimerColour}
       />
     </div>
   );

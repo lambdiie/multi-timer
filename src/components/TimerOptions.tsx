@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import ConfirmationModal from "@/components/ConfirmationModal";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { DialogTrigger } from "@/components/ui/dialog";
 import { Play, Square, RotateCcw, Trash2 } from "lucide-react";
+import ColourPickerButton from "./ColourPicker";
 
 function TimerOptions({
   timer,
@@ -13,22 +16,24 @@ function TimerOptions({
   onStop,
   onReset,
   onRemove,
-  onEdit,
+  onEditName,
+  onEditColour,
 }: {
   timer: TimerType;
-  onStart: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onStop: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onReset: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onRemove: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onEdit: (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => void;
+  onStart: () => void;
+  onStop: () => void;
+  onReset: () => void;
+  onRemove: () => void;
+  onEditName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onEditColour: (value: string) => void;
 }) {
   return (
-    <div className="flex">
+    <div className="flex py-2 w-full justify-center">
       <Input
         placeholder="Untitled"
         value={timer.name}
-        onChange={onEdit}
-        className="text-center"
+        onChange={onEditName}
+        className="text-center max-w-xs"
       />
       <Tooltip>
         <TooltipTrigger asChild>
@@ -52,24 +57,40 @@ function TimerOptions({
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button onClick={onReset} variant="outline" aria-label="Reset">
-            <RotateCcw />
-          </Button>
+          <ColourPickerButton value={timer.colour} onChange={onEditColour}/>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Reset</p>
+          <p>Edit Colour</p>
         </TooltipContent>
       </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button onClick={onRemove} variant="outline" aria-label="Remove">
-            <Trash2 />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Remove</p>
-        </TooltipContent>
-      </Tooltip>
+      <ConfirmationModal name="Reset" onSubmit={onReset}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button variant="outline" aria-label="Reset">
+                <RotateCcw />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Reset</p>
+          </TooltipContent>
+        </Tooltip>
+      </ConfirmationModal>
+      <ConfirmationModal name="Remove" onSubmit={onRemove}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button variant="outline" aria-label="Remove">
+                <Trash2 />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Remove</p>
+          </TooltipContent>
+        </Tooltip>
+      </ConfirmationModal>
     </div>
   );
 }

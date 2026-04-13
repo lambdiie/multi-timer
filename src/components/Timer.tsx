@@ -8,20 +8,22 @@ function Timer({
   onStop,
   onReset,
   onRemove,
-  onEdit,
+  onEditName,
+  onEditColour,
 }: {
-  timer: TimerType;
-  onStart: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onStop: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onReset: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onRemove: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onEdit: (e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) => void;
+  timer: TimerType,
+  onStart: () => void,
+  onStop: () => void,
+  onReset: () => void,
+  onRemove: () => void,
+  onEditName: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  onEditColour: (value: string) => void,
 }) {
-  function onClick(e: React.MouseEvent<HTMLButtonElement>) {
+  function onClick() {
     if (timer.isRunning) {
-      onStop(e);
+      onStop();
     } else {
-      onStart(e);
+      onStart();
     }
   }
 
@@ -29,7 +31,8 @@ function Timer({
     <div className="flex flex-col items-center grow basis-1/3">
       <button
         onClick={onClick}
-        className={`w-full h-60 text-6xl bg-fuchsia-500 hover:cursor-pointer ${timer.isRunning && "brightness-125"}`}
+        className={`w-full h-60 text-6xl hover:cursor-pointer ${timer.isRunning && "brightness-125"}`}
+        style={{ backgroundColor: timer.colour }}
       >
         <TimerText timer={timer} />
       </button>
@@ -39,7 +42,8 @@ function Timer({
         onStop={onStop}
         onReset={onReset}
         onRemove={onRemove}
-        onEdit={onEdit}
+        onEditName={onEditName}
+        onEditColour={onEditColour}
       />
     </div>
   );

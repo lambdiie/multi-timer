@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { loadTimers, saveTimers } from "./storage";
 
+const DEFAULT_COLOUR = "FFFFFF";
+
 export function useTimers() {
   const [timers, setTimers] = useState(loadTimers);
 
@@ -18,6 +20,7 @@ export function useTimers() {
         elapsed: 0,
         isRunning: false,
         name: "",
+        colour: DEFAULT_COLOUR,
       },
     ]);
   }
@@ -66,6 +69,12 @@ export function useTimers() {
     );
   }
 
+  function setTimerColour(id: number, colour: string) {
+    setTimers((timers: TimerType[]) =>
+      timers.map((t) => (t.id === id ? { ...t, colour: colour } : t)),
+    );
+  }
+
   return {
     timers,
     addTimer,
@@ -74,5 +83,6 @@ export function useTimers() {
     stopTimer,
     resetTimer,
     setTimerName,
+    setTimerColour,
   };
 }
