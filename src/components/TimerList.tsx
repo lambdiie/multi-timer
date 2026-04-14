@@ -1,18 +1,22 @@
 import { useTimersStore } from "@/utils/useTimersStore";
+import { DragDropProvider } from "@dnd-kit/react";
+
 import Timer from "./Timer";
 
 function TimerList() {
-  const { timers } = useTimersStore();
+  const { timers, handleDragMove } = useTimersStore();
 
   return (
     <div className="w-screen flex flex-wrap">
-      {timers.map((t: TimerType, index: number) => (
-        <Timer
-          key={t.id}
-          timer={t}
-          index={index}
-        />
-      ))}
+      <DragDropProvider onDragEnd={handleDragMove}>
+        {timers.map((t: TimerType, index: number) => (
+          <Timer
+            key={t.id}
+            timer={t}
+            index={index}
+          />
+        ))}
+      </DragDropProvider>
     </div>
   );
 }

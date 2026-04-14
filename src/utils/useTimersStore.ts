@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { DragOverEvent, DragEndEvent } from "@dnd-kit/react";
+import { move } from "@dnd-kit/helpers";
 
 const STORAGE_KEY = "timers";
 const DEFAULT_COLOUR = "FFFFFF";
@@ -7,6 +9,7 @@ const DEFAULT_COLOUR = "FFFFFF";
 type TimerStore = {
   timers: TimerType[];
 
+  handleDragMove: (event: DragOverEvent | DragEndEvent) => void;
   addTimer: () => void;
   removeTimer: (id: string) => void;
   startTimer: (id: string) => void;
@@ -20,6 +23,12 @@ export const useTimersStore = create<TimerStore>()(
   persist(
     (set) => ({
       timers: [],
+
+      handleDragMove: (event) => {
+        set((state) => ({
+          timers: move(state.timers, event),
+        }));
+      },
 
       addTimer: () =>
         set((state) => ({
