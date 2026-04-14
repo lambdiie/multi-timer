@@ -1,5 +1,5 @@
 interface TimerType {
-    id: number,
+    id: string,
     startTime: number | null,
     elapsed: number,
     isRunning: boolean,

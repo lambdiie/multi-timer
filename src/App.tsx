@@ -1,4 +1,4 @@
-import { useTimers } from "@/utils/useTimers";
+import { useTimersStore } from "@/utils/useTimersStore";
 import TimerList from "@/components/TimerList";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,16 +9,7 @@ import {
 import { Plus } from "lucide-react";
 
 function App() {
-  const {
-    timers,
-    addTimer,
-    removeTimer,
-    startTimer,
-    stopTimer,
-    resetTimer,
-    setTimerName,
-    setTimerColour,
-  } = useTimers();
+  const { addTimer } = useTimersStore();
 
   return (
     <div>
@@ -39,15 +30,7 @@ function App() {
         </TooltipContent>
       </Tooltip>
 
-      <TimerList
-        timers={timers}
-        startTimer={startTimer}
-        stopTimer={stopTimer}
-        resetTimer={resetTimer}
-        removeTimer={removeTimer}
-        setTimerName={setTimerName}
-        setTimerColour={setTimerColour}
-      />
+      <TimerList />
     </div>
   );
 }

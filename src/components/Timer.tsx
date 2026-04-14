@@ -1,34 +1,32 @@
+import { useTimersStore } from "@/utils/useTimersStore";
 import { useEffect, useState } from "react";
 import { getElapsed, formatTime } from "@/utils/timeUtils";
+import { useSortable } from "@dnd-kit/react/sortable";
+
 import TimerOptions from "./TimerOptions";
 
 function Timer({
   timer,
-  onStart,
-  onStop,
-  onReset,
-  onRemove,
-  onEditName,
-  onEditColour,
+  index,
 }: {
   timer: TimerType,
-  onStart: () => void,
-  onStop: () => void,
-  onReset: () => void,
-  onRemove: () => void,
-  onEditName: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  onEditColour: (value: string) => void,
+  index: number,
 }) {
+  const { startTimer, stopTimer } = useTimersStore();
+
+  const id = timer.id;
+  const {ref} = useSortable({id, index});
+
   function onClick() {
-    if (timer.isRunning) {
-      onStop();
+    if (!timer.isRunning) {
+      startTimer(timer.id);
     } else {
-      onStart();
+      stopTimer(timer.id);
     }
   }
 
   return (
-    <div className="flex flex-col items-center grow basis-1/3">
+    <div ref={ref} className="flex flex-col items-center grow basis-1/3">
       <button
         onClick={onClick}
         className={`w-full h-60 text-6xl hover:cursor-pointer ${timer.isRunning && "brightness-125"}`}
@@ -38,12 +36,6 @@ function Timer({
       </button>
       <TimerOptions
         timer={timer}
-        onStart={onStart}
-        onStop={onStop}
-        onReset={onReset}
-        onRemove={onRemove}
-        onEditName={onEditName}
-        onEditColour={onEditColour}
       />
     </div>
   );

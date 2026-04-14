@@ -1,3 +1,4 @@
+import { useTimersStore } from "@/utils/useTimersStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ConfirmationModal from "@/components/ConfirmationModal";
@@ -12,32 +13,23 @@ import ColourPickerButton from "./ColourPicker";
 
 function TimerOptions({
   timer,
-  onStart,
-  onStop,
-  onReset,
-  onRemove,
-  onEditName,
-  onEditColour,
 }: {
   timer: TimerType;
-  onStart: () => void;
-  onStop: () => void;
-  onReset: () => void;
-  onRemove: () => void;
-  onEditName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onEditColour: (value: string) => void;
 }) {
+  const { startTimer, stopTimer, resetTimer, removeTimer, setTimerName, setTimerColour } = useTimersStore();
+
   return (
-    <div className="flex py-2 w-full justify-center">
+    <div className="flex py-2 w-full justify-center bg-white">
       <Input
         placeholder="Untitled"
         value={timer.name}
-        onChange={onEditName}
+        onChange={(e) => setTimerName(timer.id, e.target.value)}
         className="text-center max-w-xs"
       />
+
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button onClick={onStart} variant="outline" aria-label="Start">
+          <Button onClick={() => startTimer(timer.id)} variant="outline" aria-label="Start">
             <Play />
           </Button>
         </TooltipTrigger>
@@ -45,9 +37,10 @@ function TimerOptions({
           <p>Start</p>
         </TooltipContent>
       </Tooltip>
+
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button onClick={onStop} variant="outline" aria-label="Stop">
+          <Button onClick={() => stopTimer(timer.id)} variant="outline" aria-label="Stop">
             <Square />
           </Button>
         </TooltipTrigger>
@@ -55,15 +48,10 @@ function TimerOptions({
           <p>Stop</p>
         </TooltipContent>
       </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <ColourPickerButton value={timer.colour} onChange={onEditColour}/>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Edit Colour</p>
-        </TooltipContent>
-      </Tooltip>
-      <ConfirmationModal name="Reset" onSubmit={onReset}>
+
+      <ColourPickerButton value={timer.colour} onChange={(value) => setTimerColour(timer.id, value)} />
+
+      <ConfirmationModal name="Reset" onSubmit={() => resetTimer(timer.id)}>
         <Tooltip>
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
@@ -77,7 +65,8 @@ function TimerOptions({
           </TooltipContent>
         </Tooltip>
       </ConfirmationModal>
-      <ConfirmationModal name="Remove" onSubmit={onRemove}>
+
+      <ConfirmationModal name="Remove" onSubmit={() => removeTimer(timer.id)}>
         <Tooltip>
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
