@@ -15,6 +15,7 @@ type TimerStore = {
   startTimer: (id: string) => void;
   stopTimer: (id: string) => void;
   resetTimer: (id: string) => void;
+  pinTimer: (id: string) => void;
   setTimerName: (id: string, name: string) => void;
   setTimerColour: (id: string, colour: string) => void;
 };
@@ -38,6 +39,7 @@ export const useTimersStore = create<TimerStore>()(
               id: crypto.randomUUID(),
               startTime: null,
               elapsed: 0,
+              isPinned: false,
               isRunning: false,
               name: "",
               colour: DEFAULT_COLOUR,
@@ -79,6 +81,15 @@ export const useTimersStore = create<TimerStore>()(
             t.id === id
               ? { ...t, elapsed: 0, startTime: null, isRunning: false }
               : t,
+          ),
+        })),
+
+      pinTimer: (id) =>
+        set((state) => ({
+          timers: state.timers.map((t) =>
+            t.id === id
+              ? { ...t, isPinned: !t.isPinned }
+              : { ...t, isPinned: false }
           ),
         })),
 

@@ -8,15 +8,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DialogTrigger } from "@/components/ui/dialog";
-import { Play, Square, RotateCcw, Trash2 } from "lucide-react";
+import { Play, Square, Pin, PinOff, RotateCcw, Trash2 } from "lucide-react";
 import ColourPickerButton from "./ColourPicker";
 
-function TimerOptions({
-  timer,
-}: {
-  timer: TimerType;
-}) {
-  const { startTimer, stopTimer, resetTimer, removeTimer, setTimerName, setTimerColour } = useTimersStore();
+export default function TimerOptions({ timer }: { timer: TimerType }) {
+  const {
+    startTimer,
+    stopTimer,
+    pinTimer,
+    resetTimer,
+    removeTimer,
+    setTimerName,
+    setTimerColour,
+  } = useTimersStore();
 
   return (
     <div className="flex py-2 w-full justify-center bg-white">
@@ -29,7 +33,11 @@ function TimerOptions({
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button onClick={() => startTimer(timer.id)} variant="outline" aria-label="Start">
+          <Button
+            onClick={() => startTimer(timer.id)}
+            variant="outline"
+            aria-label="Start"
+          >
             <Play />
           </Button>
         </TooltipTrigger>
@@ -40,7 +48,11 @@ function TimerOptions({
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button onClick={() => stopTimer(timer.id)} variant="outline" aria-label="Stop">
+          <Button
+            onClick={() => stopTimer(timer.id)}
+            variant="outline"
+            aria-label="Stop"
+          >
             <Square />
           </Button>
         </TooltipTrigger>
@@ -49,7 +61,42 @@ function TimerOptions({
         </TooltipContent>
       </Tooltip>
 
-      <ColourPickerButton value={timer.colour} onChange={(value) => setTimerColour(timer.id, value)} />
+      {!timer.isPinned ? (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={() => pinTimer(timer.id)}
+              variant="outline"
+              aria-label="Pin"
+            >
+              <Pin />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Pin</p>
+          </TooltipContent>
+        </Tooltip>
+      ) : (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={() => pinTimer(timer.id)}
+              variant="outline"
+              aria-label="Unpin"
+            >
+              <PinOff />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Unpin</p>
+          </TooltipContent>
+        </Tooltip>
+      )}
+
+      <ColourPickerButton
+        value={timer.colour}
+        onChange={(value) => setTimerColour(timer.id, value)}
+      />
 
       <ConfirmationModal name="Reset" onSubmit={() => resetTimer(timer.id)}>
         <Tooltip>
@@ -83,5 +130,3 @@ function TimerOptions({
     </div>
   );
 }
-
-export default TimerOptions;

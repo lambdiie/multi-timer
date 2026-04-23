@@ -5,17 +5,17 @@ import { useSortable } from "@dnd-kit/react/sortable";
 
 import TimerOptions from "./TimerOptions";
 
-function Timer({
+export default function Timer({
   timer,
   index,
 }: {
-  timer: TimerType,
-  index: number,
+  timer: TimerType;
+  index: number;
 }) {
   const { startTimer, stopTimer } = useTimersStore();
 
   const id = timer.id;
-  const {ref} = useSortable({id, index});
+  const { ref } = useSortable({ id, index });
 
   function onClick() {
     if (!timer.isRunning) {
@@ -34,9 +34,7 @@ function Timer({
       >
         <TimerText timer={timer} />
       </button>
-      <TimerOptions
-        timer={timer}
-      />
+      <TimerOptions timer={timer} />
     </div>
   );
 }
@@ -55,7 +53,12 @@ function TimerText({ timer }: { timer: TimerType }) {
 
   const elapsed = getElapsed(timer);
 
-  return <h2>{formatTime(elapsed)}</h2>;
+  return (
+    <>
+      {timer.isPinned && (
+        <title>{`${formatTime(elapsed)} - ${timer.name}`}</title>
+      )}
+      <h2>{formatTime(elapsed)}</h2>
+    </>
+  );
 }
-
-export default Timer;
